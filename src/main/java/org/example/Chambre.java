@@ -12,6 +12,10 @@ public class Chambre {
         this.nombreLits = nombreLits;
         this.tarif = tarif;
     }
+    @Override
+    public String toString(){
+        return ("Numero de chambre : " + getNumero() + "\nStatut : " + isStatut() + "\nNombre de lits : " + getNombreLits() + "\nTarif : " + getTarif() + "€" + "\n");
+    }
 
     public int getNumero() {
         return numero;
