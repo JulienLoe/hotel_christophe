@@ -6,8 +6,8 @@ public class Chambre {
     private int nombreLits;
     private double tarif;
 
-    public Chambre(int numero, boolean statut, int nombreLits, double tarif) {
-        this.numero = numero;
+    public Chambre(int id, boolean statut, int nombreLits, double tarif) {
+        this.numero = id;
         this.statut = statut;
         this.nombreLits = nombreLits;
         this.tarif = tarif;

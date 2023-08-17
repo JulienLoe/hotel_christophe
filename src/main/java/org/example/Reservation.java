@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Reservation {
     private int id;
+
+    private int nb_reservation;
     private  boolean statut = false;
     static ArrayList<Reservation> listesDesReservations = new ArrayList<Reservation>();
 
@@ -11,9 +13,10 @@ public class Reservation {
 
     private Chambre chambre;
 
-    public Reservation(int id, Chambre chambre, Client client, boolean statut ) {
+    public Reservation(int id,int nb_reservation, Chambre chambre, Client client, boolean statut ) {
 
         this.id = id;
+        this.nb_reservation = nb_reservation;
         this.chambre = chambre;
         this.client = client;
         this.statut = statut;
@@ -55,5 +58,13 @@ public class Reservation {
 
     public void setChambre(Chambre chambre) {
         this.chambre = chambre;
+    }
+
+    public int getNb_reservation() {
+        return nb_reservation;
+    }
+
+    public void setNb_reservation(int nb_reservation) {
+        this.nb_reservation = nb_reservation;
     }
 }

@@ -1,5 +1,10 @@
 package org.example;
 
+import org.example.utils.DatabaseManager;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 import static org.example.Hotel.*;
@@ -7,12 +12,24 @@ import static org.example.Hotel.listesDeChambres;
 import static org.example.Reservation.listesDesReservations;
 
 public class IHM {
-    public IHM() {
+    static Connection connection;
+
+    static {
+        try {
+            connection = DatabaseManager.getPostgreSQLConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public IHM() throws SQLException, ParseException {
         Scanner scanner = new Scanner( System.in );
+
         int number = -1;
         System.out.println("Quel est le nom de l'hôtel ?");
         String nomHotel = scanner.nextLine();
-        Hotel h1 = new Hotel(nomHotel);
+        Hotel h1 = new Hotel(nomHotel, Service.viewChambres());
+        Service.createChambre(1, false, 2, 16);
+//        Service.createHotel(nomHotel);
         System.out.println(nomHotel + " créé avec succés !\n");
         do {
             System.out.println("=== Menu Principal ===");
@@ -41,8 +58,8 @@ public class IHM {
                     prenom = scanner.nextLine();
                     System.out.println("Quel est le téléphone du client ?");
                     numeroTelephone = scanner.nextLine();
-                    Client newClient = new Client(tabClient.length + 1, nom, prenom, numeroTelephone);
-                    clients.add(newClient);
+                    Service.createClient(nom, prenom, numeroTelephone);
+
                     if (tailleListe != clients.size()) {
                         System.out.println("\nClient ajouté avec succés !\n");
                     } else {
@@ -71,46 +88,15 @@ public class IHM {
 
 
                     int nombreDeLits = 0;
-                    System.out.println("Nom du client : ");
-                    nomClient = scanner.nextLine();
+                    System.out.println("ID du client : ");
+                    String numeroClient= scanner.nextLine();
                     System.out.println("Numéro de chambre : ");
                     numeroChambre = scanner.nextInt();
                     System.out.println("Nombre de lits : ");
                     nombreDeLits = scanner.nextInt();
-
-                    for (int i = 0; i < clients.size(); i++) {
-
-                        if (clients.get(i).getNom().equalsIgnoreCase(nomClient)) {
-
-                            for (int j = 0; j < listesDeChambres.size(); j++) {
-                                if (listesDeChambres.get(j).getNumero() == numeroChambre && !listesDeChambres.get(j).isStatut()) {
-                                    if (nombreDeLits == listesDeChambres.get(j).getNombreLits()) {
-                                        Reservation r1 = new Reservation(1, h1.getListesDeChambres().get(numeroChambre), h1.getClients().get(i), true);
-                                        listesDesReservations.add(r1);
-                                        listesDeChambres.get(numeroChambre).setStatut(true);
-                                        System.out.println("Réservation ajoutée !\n");
-                                        break;
-                                    }
-                                    System.out.println("\nLe nombre de lits ne correspond pas à la chambre !\n");
-                                    break;
-                                }
-
-                                if (listesDeChambres.get(j).isStatut() && listesDeChambres.get(j).getNumero() == numeroChambre) {
-                                    System.out.println("\nLa chambre est déjà occupée!\n");
-                                    break;
-                                }
-
-                                if (listesDeChambres.size() <= j + 1) {
-                                    System.out.println(listesDeChambres.get(j).isStatut());
-                                    System.out.println("\nLe numéro de chambre n'existe pas !\n");
-                                }
-                            }
-                            break;
-                        }
-                        if (clients.size() <= i + 1) {
-                            System.out.println("\nLe nom n'existe pas !\n");
-                        }
-                    }
+                    System.out.println("Numéro de réservation :");
+                    int nb_reservation = scanner.nextInt();
+                    Service.createReservation(h1, numeroClient,numeroChambre, nombreDeLits, nb_reservation);
 
                     break;
 
@@ -137,9 +123,7 @@ public class IHM {
                     break;
 
                 case 7:
-                    for (Chambre listesDeChambre : listesDeChambres) {
-                        System.out.println(listesDeChambre.toString());
-                    }
+                   Service.viewChambres();
             }
         }while (number != 0);
     }

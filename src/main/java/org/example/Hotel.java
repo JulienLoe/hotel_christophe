@@ -24,8 +24,8 @@ public class Hotel {
             {"Linus", "Moon", "04 22 56 45 74"}
     };
 
-    public Hotel(String nom) {
-
+    public Hotel(String nom,  ArrayList<Chambre> listesDeChambres) {
+        this.listesDeChambres = listesDeChambres;
         this.nom = nom;
 
         int nombreAleatoireClient = 8 + (int)(Math.random() * ((11 - 8) + 1));;
