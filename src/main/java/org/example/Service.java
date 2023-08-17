@@ -163,4 +163,25 @@ public class Service {
         return chambreClient;
     }
 
+    public static ArrayList<Reservation> viewReservation() throws SQLException {
+        listesDeChambres = viewChambres();
+        clients = viewClient();
+        ArrayList<Reservation> reservationTab = new ArrayList<>();
+        String requestStudent = "SELECT * FROM reservation ";
+        Statement statementStudent = connection.createStatement();
+        ResultSet resultSetReservation = statementStudent.executeQuery(requestStudent);
+        while (resultSetReservation.next()) {
+            Reservation reservation = new Reservation (resultSetReservation.getInt("id"), resultSetReservation.getInt("nb_reservation"), listesDeChambres.get(resultSetReservation.getInt("ch_id")), clients.get(resultSetReservation.getInt("cl_id")), resultSetReservation.getBoolean("statut") );
+            System.out.println(reservation.getId() + " , " + reservation.getNb_reservation() +
+                    " , " + reservation.getChambre().getNumero() + " , " + reservation.getClient().getNom());
+            System.out.println(resultSetReservation.getInt("id") + " , " + resultSetReservation.getInt("nb_reservation") +
+                    " , " + resultSetReservation.getInt("ch_id") +
+                    " , " + resultSetReservation.getInt("cl_id") +
+                            " , " + resultSetReservation.getBoolean("statut")
+                    );
+            reservationTab.add(reservation);
+        }
+        return reservationTab;
+    }
+
 }

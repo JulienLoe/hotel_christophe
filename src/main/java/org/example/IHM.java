@@ -68,7 +68,7 @@ public class IHM {
 
                 break;
                 case 2:
-                    System.out.println(h1.toString());
+                   Service.viewReservation();
                     break;
 
                 case 3:
@@ -117,6 +117,7 @@ public class IHM {
                     break;
 
                 case 6:
+                    listesDesReservations = Service.viewReservation();
                     for (Reservation listesDesReservation : listesDesReservations) {
                         System.out.println(listesDesReservation.toString());
                     }
@@ -124,6 +125,7 @@ public class IHM {
 
                 case 7:
                    Service.viewChambres();
+                   break;
             }
         }while (number != 0);
     }
